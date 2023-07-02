@@ -5,6 +5,7 @@ import time
 import random
 
 win = visual.Window(fullscr=True)
+# win = visual.Window(size=(1200, 900))
 mouse = event.Mouse()
 
 test_score = []
@@ -29,6 +30,8 @@ def single_session():
         level += 1
         level_text = text(f'Poziom: {level}', pos=(0, 0.8))
         level_text.draw()
+        for square in squares:
+            square.setAutoDraw(True)
         win.flip()
         square = random.randrange(0, 9)
         squares_table.append(square)
@@ -71,6 +74,12 @@ def single_session():
                         break
         end = time.time()
         times.append(round(end - start, 3))
+        for square in squares:
+            square.setAutoDraw(False)
+        fixation_cross = text('+', height=0.3, pos=(0, 0))
+        fixation_cross.draw()
+        win.flip()
+        time.sleep(0.5)
     return [level - 1, times[ : -1], squares_table]
 
 
@@ -184,8 +193,8 @@ win.close()
 
 # Saving data to file
 now = datetime.now()
-num_lines = sum(1 for _ in open('../zapis.txt'))
+num_lines = sum(1 for _ in open('zapis.txt'))
 plec = input("Podaj plec osoby: 'm', 'k' lub 'inna': ")
 wiek = input("Podaj wiek osoby: ")
-with open('../zapis.txt', 'a+') as f:
+with open('zapis.txt', 'a+') as f:
     f.write(str(num_lines + 1) + ' ' + plec + ' ' + wiek + ' Data ukończenia eksperymentu: ' + str(now) + ' ' + str(score_table) + '\n')
